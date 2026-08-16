@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator namještaja</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .calculate {
+      background: #111827;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .result {
+      display: none;
+      text-align: center;
+    }
+
+    .price {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .details {
+      color: #6b7280;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>🪑 Kalkulator namještaja</h1>
+  <div class="subtitle">Brzi izračun cijene kuhinje</div>
+
+  <div class="card">
+
+    <label>Dužina kuhinje (metara)</label>
+    <input id="meters" type="number" min="0.1" step="0.1" placeholder="Npr. 6">
+
+    <label>Materijal</label>
+    <select id="material">
+      <option value="650">Iveral — 650 KM/m</option>
+      <option value="850">MDF visoki sjaj — 850 KM/m</option>
+      <option value="1100">Lakirani MDF — 1100 KM/m</option>
+    </select>
+
+    <label>Radna ploča</label>
+    <select id="worktop">
+      <option value="0">Bez radne ploče</option>
+      <option value="150">Standardna — +150 KM/m</option>
+      <option value="250">Premium — +250 KM/m</option>
+    </select>
+
+    <label>Montaža</label>
+    <select id="assembly">
+      <option value="0">Bez montaže</option>
+      <option value="80">Montaža — +80 KM/m</option>
+    </select>
+
+    <button class="calculate" onclick="calculate()">
+      🧮 IZRAČUNAJ CIJENU
+    </button>
+
+  </div>
+
+  <div class="card result" id="result">
+
+    <div>Procijenjena cijena:</div>
+
+    <div class="price" id="price">
+      0 KM
+    </div>
+
+    <div class="details" id="details"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+  function calculate() {
+
+    const meters = parseFloat(
+      document.getElementById("meters").value
+    );
+
+    const material = parseFloat(
+      document.getElementById("material").value
+    );
+
+    const worktop = parseFloat(
+      document.getElementById("worktop").value
+    );
+
+    const assembly = parseFloat(
+      document.getElementById("assembly").value
+    );
+
+    if (!meters || meters <= 0) {
+      alert("Unesi dužinu kuhinje.");
+      return;
+    }
+
+    const totalPerMeter =
+      material + worktop + assembly;
+
+    const total = meters * totalPerMeter;
+
+    document.getElementById("price").innerText =
+      total.toLocaleString("bs-BA") + " KM";
+
+    document.getElementById("details").innerText =
+      meters + " m × " +
+      totalPerMeter.toLocaleString("bs-BA") +
+      " KM/m";
+
+    document.getElementById("result").style.display =
+      "block";
+
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.HapticFeedback.impactOccurred("light");
+    }
+  }
+
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  }
+
+</script>
+
+</body>
+</html>
