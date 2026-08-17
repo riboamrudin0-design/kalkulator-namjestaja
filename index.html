@@ -1,1 +1,719 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator namještaja</title>
 
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#111827;
+    color:white;
+}
+
+header{
+    background:#1f2937;
+    padding:20px;
+    text-align:center;
+    border-bottom:2px solid #374151;
+}
+
+header h1{
+    margin:0 0 8px;
+    font-size:26px;
+}
+
+header p{
+    margin:0;
+    color:#cbd5e1;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:15px;
+}
+
+.card{
+    background:#1f2937;
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:0 5px 20px #0005;
+}
+
+h2{
+    margin-top:0;
+    color:#facc15;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+}
+
+label{
+    display:block;
+    color:#cbd5e1;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+input,select,button{
+    width:100%;
+    padding:12px;
+    border-radius:9px;
+    border:1px solid #475569;
+    font-size:16px;
+}
+
+input,select{
+    background:#0f172a;
+    color:white;
+}
+
+button{
+    background:#16a34a;
+    color:white;
+    border:0;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#15803d;
+}
+
+button.red{
+    background:#dc2626;
+}
+
+button.blue{
+    background:#2563eb;
+}
+
+button.yellow{
+    background:#ca8a04;
+}
+
+#canvas{
+    width:100%;
+    height:500px;
+    background:#f8fafc;
+    border-radius:10px;
+    border:3px solid #64748b;
+    display:block;
+}
+
+.result{
+    background:#0f172a;
+    padding:15px;
+    border-radius:10px;
+    margin-top:12px;
+}
+
+.price{
+    font-size:28px;
+    color:#4ade80;
+    font-weight:bold;
+}
+
+.small{
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.item{
+    background:#334155;
+    padding:12px;
+    border-radius:10px;
+    margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.item button{
+    width:auto;
+    padding:7px 12px;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+}
+
+.total-box{
+    background:#064e3b;
+    border:2px solid #22c55e;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+@media(max-width:600px){
+    #canvas{height:380px}
+    header h1{font-size:22px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🛠️ KALKULATOR NAMJEŠTAJA</h1>
+<p>Projektuj • Izračunaj materijal • Izračunaj cijenu</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>1. Izaberi namještaj</h2>
+
+<div class="grid">
+
+<div>
+<label>Vrsta</label>
+<select id="type">
+<option value="Kuhinja">Kuhinja</option>
+<option value="Ormar">Ormar</option>
+<option value="Komoda">Komoda</option>
+<option value="TV komoda">TV komoda</option>
+<option value="Polica">Polica</option>
+<option value="Radni sto">Radni sto</option>
+<option value="Krevet">Krevet</option>
+<option value="Ostalo">Ostalo</option>
+</select>
+</div>
+
+<div>
+<label>Širina (cm)</label>
+<input id="width" type="number" value="300" min="1">
+</div>
+
+<div>
+<label>Visina (cm)</label>
+<input id="height" type="number" value="250" min="1">
+</div>
+
+<div>
+<label>Dubina (cm)</label>
+<input id="depth" type="number" value="60" min="1">
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h2>2. Materijal</h2>
+
+<div class="grid">
+
+<div>
+<label>Materijal</label>
+<select id="material">
+<option value="iveral">Iveral</option>
+<option value="mdf">MDF visoki sjaj</option>
+<option value="lakirani">Lakirani MDF</option>
+</select>
+</div>
+
+<div>
+<label>Cijena materijala po m² (KM)</label>
+<input id="materialPrice" type="number" value="35">
+</div>
+
+<div>
+<label>Cijena kantovanja po metru (KM)</label>
+<input id="edgePrice" type="number" value="2">
+</div>
+
+<div>
+<label>Cijena okova (KM)</label>
+<input id="hardware" type="number" value="150">
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h2>3. Dodaj element</h2>
+
+<div class="grid">
+
+<div>
+<label>Naziv elementa</label>
+<input id="elementName" value="Element">
+</div>
+
+<div>
+<label>Širina (cm)</label>
+<input id="elementWidth" type="number" value="60">
+</div>
+
+<div>
+<label>Visina (cm)</label>
+<input id="elementHeight" type="number" value="80">
+</div>
+
+<div>
+<label>Dubina (cm)</label>
+<input id="elementDepth" type="number" value="56">
+</div>
+
+</div>
+
+<br>
+
+<div class="actions">
+<button onclick="addElement()">➕ Dodaj element</button>
+<button class="blue" onclick="addPreset()">🏠 Dodaj standardni element</button>
+<button class="red" onclick="clearElements()">🗑️ Obriši sve</button>
+</div>
+
+<div id="elementList"></div>
+
+</div>
+
+<div class="card">
+<h2>4. Crtež</h2>
+
+<canvas id="canvas" width="1000" height="500"></canvas>
+
+<br>
+
+<div class="actions">
+<button class="blue" onclick="draw()">🔄 Osvježi crtež</button>
+<button class="yellow" onclick="downloadDrawing()">📥 Sačuvaj crtež</button>
+</div>
+</div>
+
+<div class="card">
+<h2>5. Izračun</h2>
+
+<button onclick="calculate()">🧮 IZRAČUNAJ CIJENU I MATERIJAL</button>
+
+<div id="result" class="result">
+Klikni dugme iznad da dobiješ obračun.
+</div>
+</div>
+
+<div class="card">
+<h2>6. Cijena prodaje</h2>
+
+<div class="grid">
+
+<div>
+<label>Marža / zarada (%)</label>
+<input id="margin" type="number" value="30">
+</div>
+
+<div>
+<label>Montaža (KM)</label>
+<input id="assembly" type="number" value="0">
+</div>
+
+<div>
+<label>Prevoz (KM)</label>
+<input id="transport" type="number" value="0">
+</div>
+
+</div>
+
+<br>
+
+<button onclick="calculate()">💰 IZRAČUNAJ PRODAJNU CIJENU</button>
+
+<div id="saleResult"></div>
+</div>
+
+</div>
+
+<script>
+
+let elements = [];
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function addElement(){
+
+    const name = document.getElementById("elementName").value || "Element";
+
+    const width = Number(document.getElementById("elementWidth").value);
+    const height = Number(document.getElementById("elementHeight").value);
+    const depth = Number(document.getElementById("elementDepth").value);
+
+    if(width <= 0 || height <= 0 || depth <= 0){
+        alert("Unesi ispravne mjere.");
+        return;
+    }
+
+    elements.push({
+        name:name,
+        width:width,
+        height:height,
+        depth:depth
+    });
+
+    showElements();
+    draw();
+}
+
+function addPreset(){
+
+    const type = document.getElementById("type").value;
+
+    let name = "Element";
+    let w = 60;
+    let h = 80;
+    let d = 56;
+
+    if(type === "Kuhinja"){
+        name = "Kuhinjski element";
+        w = 60;
+        h = 72;
+        d = 56;
+    }
+
+    if(type === "Ormar"){
+        name = "Element ormara";
+        w = 80;
+        h = 240;
+        d = 60;
+    }
+
+    if(type === "Komoda"){
+        name = "Komoda";
+        w = 100;
+        h = 80;
+        d = 45;
+    }
+
+    if(type === "TV komoda"){
+        name = "TV komoda";
+        w = 180;
+        h = 55;
+        d = 40;
+    }
+
+    if(type === "Polica"){
+        name = "Polica";
+        w = 80;
+        h = 30;
+        d = 25;
+    }
+
+    if(type === "Radni sto"){
+        name = "Radni sto";
+        w = 140;
+        h = 75;
+        d = 60;
+    }
+
+    if(type === "Krevet"){
+        name = "Krevet";
+        w = 160;
+        h = 40;
+        d = 200;
+    }
+
+    elements.push({
+        name:name,
+        width:w,
+        height:h,
+        depth:d
+    });
+
+    showElements();
+    draw();
+}
+
+function showElements(){
+
+    const list = document.getElementById("elementList");
+
+    if(elements.length === 0){
+        list.innerHTML = '<p class="small">Nema dodatih elemenata.</p>';
+        return;
+    }
+
+    list.innerHTML = "";
+
+    elements.forEach((el,index)=>{
+
+        const div = document.createElement("div");
+
+        div.className = "item";
+
+        div.innerHTML = `
+        <div>
+            <b>${el.name}</b><br>
+            <span class="small">
+            ${el.width} × ${el.height} × ${el.depth} cm
+            </span>
+        </div>
+
+        <button class="red" onclick="removeElement(${index})">
+        Obriši
+        </button>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+function removeElement(index){
+
+    elements.splice(index,1);
+
+    showElements();
+    draw();
+}
+
+function clearElements(){
+
+    if(confirm("Obrisati sve elemente?")){
+        elements = [];
+        showElements();
+        draw();
+    }
+}
+
+function calculate(){
+
+    const materialPrice =
+        Number(document.getElementById("materialPrice").value) || 0;
+
+    const edgePrice =
+        Number(document.getElementById("edgePrice").value) || 0;
+
+    const hardware =
+        Number(document.getElementById("hardware").value) || 0;
+
+    const margin =
+        Number(document.getElementById("margin").value) || 0;
+
+    const assembly =
+        Number(document.getElementById("assembly").value) || 0;
+
+    const transport =
+        Number(document.getElementById("transport").value) || 0;
+
+    if(elements.length === 0){
+
+        alert("Prvo dodaj barem jedan element.");
+
+        return;
+    }
+
+    let area = 0;
+    let edgeMeters = 0;
+
+    elements.forEach(el=>{
+
+        const w = el.width / 100;
+        const h = el.height / 100;
+        const d = el.depth / 100;
+
+        /*
+        Procjena pločastog materijala:
+        2 stranice + gornja/donja + leđa
+        */
+
+        area +=
+            (2 * h * d) +
+            (2 * w * d) +
+            (w * h);
+
+        edgeMeters +=
+            (2 * w) +
+            (2 * h);
+    });
+
+    area = area * 1.15;
+
+    const materialCost = area * materialPrice;
+
+    const edgeCost = edgeMeters * edgePrice;
+
+    const productionCost =
+        materialCost +
+        edgeCost +
+        hardware;
+
+    const saleBeforeExtras =
+        productionCost * (1 + margin / 100);
+
+    const finalSale =
+        saleBeforeExtras +
+        assembly +
+        transport;
+
+    const result = document.getElementById("result");
+
+    result.innerHTML = `
+    <b>REZULTAT:</b>
+
+    <p>📐 Površina materijala:
+    <b>${area.toFixed(2)} m²</b></p>
+
+    <p>📏 Kantovanje:
+    <b>${edgeMeters.toFixed(2)} m</b></p>
+
+    <p>🪵 Materijal:
+    <b>${materialCost.toFixed(2)} KM</b></p>
+
+    <p>🔩 Kantovanje:
+    <b>${edgeCost.toFixed(2)} KM</b></p>
+
+    <p>🔧 Okov:
+    <b>${hardware.toFixed(2)} KM</b></p>
+
+    <hr>
+
+    <p>💵 Trošak izrade:
+    <b>${productionCost.toFixed(2)} KM</b></p>
+    `;
+
+    document.getElementById("saleResult").innerHTML = `
+    <div class="total-box">
+        <div class="small">PREPORUČENA PRODAJNA CIJENA</div>
+        <div class="price">${finalSale.toFixed(2)} KM</div>
+
+        <p>
+        Trošak: ${productionCost.toFixed(2)} KM<br>
+        Marža: ${margin}%<br>
+        Montaža: ${assembly.toFixed(2)} KM<br>
+        Prevoz: ${transport.toFixed(2)} KM
+        </p>
+    </div>
+    `;
+}
+
+function draw(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle="#f8fafc";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    if(elements.length === 0){
+
+        ctx.fillStyle="#64748b";
+        ctx.font="28px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            "Dodaj elemente da nacrtaš namještaj",
+            canvas.width/2,
+            canvas.height/2
+        );
+
+        return;
+    }
+
+    const maxWidth =
+        Math.max(...elements.map(e=>e.width));
+
+    const totalWidth =
+        elements.reduce((sum,e)=>sum+e.width,0);
+
+    const scale =
+        Math.min(
+            850 / totalWidth,
+            360 / Math.max(...elements.map(e=>e.height))
+        );
+
+    let x = 70;
+
+    elements.forEach((el,index)=>{
+
+        const w = el.width * scale;
+        const h = el.height * scale;
+
+        const y = 400 - h;
+
+        ctx.fillStyle =
+            index % 2 === 0 ? "#cbd5e1" : "#94a3b8";
+
+        ctx.fillRect(x,y,w,h);
+
+        ctx.strokeStyle="#111827";
+        ctx.lineWidth=3;
+        ctx.strokeRect(x,y,w,h);
+
+        ctx.fillStyle="#111827";
+        ctx.font="bold 14px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            el.name,
+            x+w/2,
+            y+h/2
+        );
+
+        ctx.font="12px Arial";
+
+        ctx.fillText(
+            el.width+" cm",
+            x+w/2,
+            420
+        );
+
+        ctx.save();
+
+        ctx.translate(
+            x-8,
+            y+h/2
+        );
+
+        ctx.rotate(-Math.PI/2);
+
+        ctx.fillText(
+            el.height+" cm",
+            0,
+            0
+        );
+
+        ctx.restore();
+
+        x += w + 15;
+    });
+
+    ctx.fillStyle="#111827";
+    ctx.font="bold 18px Arial";
+    ctx.textAlign="left";
+
+    ctx.fillText(
+        "KALKULATOR NAMJEŠTAJA",
+        25,
+        35
+    );
+}
+
+function downloadDrawing(){
+
+    const link = document.createElement("a");
+
+    link.download="crtez-namjestaja.png";
+
+    link.href=canvas.toDataURL("image/png");
+
+    link.click();
+}
+
+showElements();
+draw();
+
+</script>
+
+</body>
+</html>
