@@ -1,76 +1,258 @@
 <!DOCTYPE html>
 <html lang="bs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalkulator namještaja</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator namještaja</title>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+body{
+  margin:0;
+  padding:20px;
+  font-family:Arial,sans-serif;
+  background:#f3f4f6;
+  color:#111827;
+}
 
-    body {
-      margin: 0;
-      padding: 20px;
-      background: #f3f4f6;
-      color: #111827;
-    }
+.container{
+  max-width:700px;
+  margin:auto;
+}
 
-    .app {
-      max-width: 500px;
-      margin: auto;
-    }
+h1{
+  text-align:center;
+  margin-bottom:8px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 8px;
-    }
+.subtitle{
+  text-align:center;
+  color:#6b7280;
+  margin-bottom:25px;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #6b7280;
-      margin-bottom: 25px;
-    }
+.card{
+  background:white;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      margin-bottom: 15px;
-    }
+label{
+  display:block;
+  font-weight:bold;
+  margin:14px 0 7px;
+}
 
-    label {
-      display: block;
-      margin-top: 14px;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+select,input{
+  width:100%;
+  padding:13px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  font-size:16px;
+}
 
-    input, select {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 16px;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 
-    button {
-      width: 100%;
-      border: none;
-      padding: 15px;
-      border-radius: 12px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button{
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:#111827;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:18px;
+}
 
-    .calculate {
-      background: #111827;
+button:hover{
+  opacity:.9;
+}
+
+.result{
+  background:#111827;
+  color:white;
+  border-radius:16px;
+  padding:22px;
+  text-align:center;
+  margin-top:18px;
+}
+
+.price{
+  font-size:34px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.details{
+  color:#d1d5db;
+  line-height:1.7;
+}
+
+.hidden{
+  display:none;
+}
+
+.price-box{
+  background:#f9fafb;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+.small{
+  font-size:13px;
+  color:#6b7280;
+}
+
+@media(max-width:500px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  body{
+    padding:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🪚 Kalkulator namještaja</h1>
+<div class="subtitle">Brz obračun cijene namještaja po mjeri</div>
+
+<div class="card">
+
+<label>Vrsta namještaja</label>
+
+<select id="type" onchange="changeType()">
+  <option value="kuhinja">Kuhinja</option>
+  <option value="ormar">Ormar</option>
+  <option value="komoda">Komoda</option>
+  <option value="tv">TV komoda</option>
+  <option value="police">Police</option>
+  <option value="ostalo">Ostalo</option>
+</select>
+
+<label>Materijal</label>
+
+<select id="material">
+  <option value="iveral">Iveral</option>
+  <option value="mdf_sjaj">MDF visoki sjaj</option>
+  <option value="mdf_lak">Lakirani MDF</option>
+  <option value="mdf_akril">MDF akril</option>
+</select>
+
+<div id="kitchenFields">
+
+<label>Dužina kuhinje (m)</label>
+<input type="number" id="length" min="0" step="0.1" placeholder="npr. 5.5">
+
+</div>
+
+<div id="standardFields">
+
+<div class="grid">
+
+<div>
+<label>Širina (cm)</label>
+<input type="number" id="width" min="0" placeholder="npr. 300">
+</div>
+
+<div>
+<label>Visina (cm)</label>
+<input type="number" id="height" min="0" placeholder="npr. 240">
+</div>
+
+</div>
+
+</div>
+
+<label>Broj komada</label>
+<input type="number" id="quantity" value="1" min="1">
+
+<label>Dodaci</label>
+
+<select id="extras">
+  <option value="0">Bez dodataka</option>
+  <option value="150">Standardni okovi +150 KM</option>
+  <option value="300">Bolji okovi +300 KM</option>
+  <option value="500">Premium okovi +500 KM</option>
+</select>
+
+<button onclick="calculate()">IZRAČUNAJ CIJENU</button>
+
+</div>
+
+<div class="card">
+
+<h3>⚙️ Cjenovnik</h3>
+
+<div class="small">
+Možeš promijeniti cijene po želji.
+</div>
+
+<div class="grid">
+
+<div>
+<label>Iveral / m</label>
+<input type="number" id="priceIveral" value="650">
+</div>
+
+<div>
+<label>MDF visoki sjaj / m</label>
+<input type="number" id="priceSjaj" value="850">
+</div>
+
+<div>
+<label>Lakirani MDF / m</label>
+<input type="number" id="priceLak" value="1100">
+</div>
+
+<div>
+<label>MDF akril / m</label>
+<input type="number" id="priceAkril" value="950">
+</div>
+
+</div>
+
+</div>
+
+<div id="result" class="result hidden">
+
+<div>Procijenjena cijena</div>
+
+<div class="price" id="total">0 KM</div>
+
+<div class="details" id="details"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function changeType(){
+
+  const type=document.getElementById("type").value;
+
+  const kitchen=document.getElementById("kitchenFields");
+  const standard=document.getElementById("standardFields");
+
+  if(type==="kuhinja"){
+    kitchen.classList.remove("hidden");
+    standard.classList.add("
       color: white;
       margin-top: 20px;
     }
