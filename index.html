@@ -472,4 +472,46 @@ function calculate(){
 
   document.getElementById("total").innerText =
     total.toLocaleString("bs-BA") +
-    "
+    " KM";
+
+
+  document.getElementById("details").innerText =
+    details;
+
+
+  document
+    .getElementById("result")
+    .classList.remove("hidden");
+
+
+  if(
+    window.Telegram &&
+    Telegram.WebApp
+  ){
+
+    Telegram.WebApp.HapticFeedback
+      .impactOccurred("light");
+
+  }
+
+}
+
+
+if(
+  window.Telegram &&
+  Telegram.WebApp
+){
+
+  Telegram.WebApp.ready();
+
+  Telegram.WebApp.expand();
+
+}
+
+
+changeType();
+
+</script>
+
+</body>
+</html>
