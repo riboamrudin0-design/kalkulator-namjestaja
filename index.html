@@ -1,4 +1,112 @@
-<!DOCTYPE html>
+            w / 2,
+            h / 2
+        );
+
+        return;
+    }
+
+    const totalWidth =
+        elements.reduce((sum, el) => sum + el.width, 0);
+
+    const maxHeight =
+        Math.max(...elements.map(el => el.height));
+
+    const margin = 25;
+
+    const scaleX =
+        (w - margin * 2) / totalWidth;
+
+    const scaleY =
+        (h - margin * 2) / maxHeight;
+
+    const scale =
+        Math.min(scaleX, scaleY);
+
+    let currentX = margin;
+
+    elements.forEach(el => {
+
+        const boxWidth = el.width * scale;
+        const boxHeight = el.height * scale;
+
+        const y = (h - boxHeight) / 2;
+
+        ctx.fillStyle = "#cbd5e1";
+
+        ctx.fillRect(
+            currentX,
+            y,
+            boxWidth,
+            boxHeight
+        );
+
+        ctx.strokeStyle = "#334155";
+        ctx.lineWidth = 2;
+
+        ctx.strokeRect(
+            currentX,
+            y,
+            boxWidth,
+            boxHeight
+        );
+
+        if (el.doors > 0) {
+
+            const doorWidth =
+                boxWidth / el.doors;
+
+            for (let d = 0; d < el.doors; d++) {
+
+                ctx.strokeStyle = "#64748b";
+                ctx.lineWidth = 1;
+
+                ctx.strokeRect(
+                    currentX + d * doorWidth + 3,
+                    y + 3,
+                    doorWidth - 6,
+                    boxHeight - 6
+                );
+            }
+        }
+
+        if (el.shelves > 0) {
+
+            for (let s = 1; s <= el.shelves; s++) {
+
+                const sy =
+                    y +
+                    (boxHeight / (el.shelves + 1)) * s;
+
+                ctx.beginPath();
+                ctx.moveTo(currentX, sy);
+                ctx.lineTo(currentX + boxWidth, sy);
+                ctx.stroke();
+            }
+        }
+
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 12px Arial";
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            el.type,
+            currentX + boxWidth / 2,
+            y - 8
+        );
+
+        currentX += boxWidth;
+    });
+}
+
+window.addEventListener("resize", drawCanvas);
+
+renderTable();
+calculate();
+
+</script>
+
+</body>
+            </html><!DOCTYPE html>
 <html lang="bs">
 <head>
 <meta charset="UTF-8">
@@ -582,5 +690,112 @@ function drawCanvas(){
         ctx.font = "18px Arial";
         ctx.textAlign = "center";
 
+        ctx.fillText(             w / 2,
+            h / 2
+        );
+
+        return;
+    }
+
+    const totalWidth =
+        elements.reduce((sum, el) => sum + el.width, 0);
+
+    const maxHeight =
+        Math.max(...elements.map(el => el.height));
+
+    const margin = 25;
+
+    const scaleX =
+        (w - margin * 2) / totalWidth;
+
+    const scaleY =
+        (h - margin * 2) / maxHeight;
+
+    const scale =
+        Math.min(scaleX, scaleY);
+
+    let currentX = margin;
+
+    elements.forEach(el => {
+
+        const boxWidth = el.width * scale;
+        const boxHeight = el.height * scale;
+
+        const y = (h - boxHeight) / 2;
+
+        ctx.fillStyle = "#cbd5e1";
+
+        ctx.fillRect(
+            currentX,
+            y,
+            boxWidth,
+            boxHeight
+        );
+
+        ctx.strokeStyle = "#334155";
+        ctx.lineWidth = 2;
+
+        ctx.strokeRect(
+            currentX,
+            y,
+            boxWidth,
+            boxHeight
+        );
+
+        if (el.doors > 0) {
+
+            const doorWidth =
+                boxWidth / el.doors;
+
+            for (let d = 0; d < el.doors; d++) {
+
+                ctx.strokeStyle = "#64748b";
+                ctx.lineWidth = 1;
+
+                ctx.strokeRect(
+                    currentX + d * doorWidth + 3,
+                    y + 3,
+                    doorWidth - 6,
+                    boxHeight - 6
+                );
+            }
+        }
+
+        if (el.shelves > 0) {
+
+            for (let s = 1; s <= el.shelves; s++) {
+
+                const sy =
+                    y +
+                    (boxHeight / (el.shelves + 1)) * s;
+
+                ctx.beginPath();
+                ctx.moveTo(currentX, sy);
+                ctx.lineTo(currentX + boxWidth, sy);
+                ctx.stroke();
+            }
+        }
+
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 12px Arial";
+        ctx.textAlign = "center";
+
         ctx.fillText(
-            "Dodaj element da se prikaže nacrt
+            el.type,
+            currentX + boxWidth / 2,
+            y - 8
+        );
+
+        currentX += boxWidth;
+    });
+}
+
+window.addEventListener("resize", drawCanvas);
+
+renderTable();
+calculate();
+
+</script>
+
+</body>
+</html>
