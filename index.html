@@ -34,7 +34,7 @@ h1{
 
 .card{
   background:white;
-  border-radius:16px;
+  border-radius:18px;
   padding:20px;
   margin-bottom:18px;
   box-shadow:0 4px 15px rgba(0,0,0,.08);
@@ -48,10 +48,11 @@ label{
 
 select,input{
   width:100%;
-  padding:13px;
+  padding:15px;
   border:1px solid #d1d5db;
-  border-radius:10px;
-  font-size:16px;
+  border-radius:12px;
+  font-size:17px;
+  background:white;
 }
 
 .grid{
@@ -62,50 +63,42 @@ select,input{
 
 button{
   width:100%;
-  padding:15px;
+  padding:17px;
   border:0;
-  border-radius:12px;
-  background:#111827;
+  border-radius:13px;
+  background:#273142;
   color:white;
-  font-size:17px;
+  font-size:18px;
   font-weight:bold;
   cursor:pointer;
-  margin-top:18px;
+  margin-top:20px;
 }
 
-button:hover{
-  opacity:.9;
-}
-
-.result{
-  background:#111827;
-  color:white;
-  border-radius:16px;
-  padding:22px;
-  text-align:center;
-  margin-top:18px;
-}
-
-.price{
-  font-size:34px;
-  font-weight:bold;
-  margin:10px 0;
-}
-
-.details{
-  color:#d1d5db;
-  line-height:1.7;
+button:active{
+  transform:scale(.99);
 }
 
 .hidden{
   display:none;
 }
 
-.price-box{
-  background:#f9fafb;
-  padding:15px;
-  border-radius:12px;
-  margin-top:15px;
+.result{
+  background:#273142;
+  color:white;
+  border-radius:18px;
+  padding:25px;
+  text-align:center;
+}
+
+.price{
+  font-size:36px;
+  font-weight:bold;
+  margin:12px 0;
+}
+
+.details{
+  color:#d1d5db;
+  line-height:1.7;
 }
 
 .small{
@@ -130,7 +123,10 @@ button:hover{
 <div class="container">
 
 <h1>🪚 Kalkulator namještaja</h1>
-<div class="subtitle">Brz obračun cijene namještaja po mjeri</div>
+
+<div class="subtitle">
+Brz obračun cijene namještaja po mjeri
+</div>
 
 <div class="card">
 
@@ -145,6 +141,7 @@ button:hover{
   <option value="ostalo">Ostalo</option>
 </select>
 
+
 <label>Materijal</label>
 
 <select id="material">
@@ -154,33 +151,63 @@ button:hover{
   <option value="mdf_akril">MDF akril</option>
 </select>
 
+
 <div id="kitchenFields">
 
 <label>Dužina kuhinje (m)</label>
-<input type="number" id="length" min="0" step="0.1" placeholder="npr. 5.5">
+
+<input
+  type="number"
+  id="length"
+  min="0"
+  step="0.1"
+  placeholder="npr. 5.5"
+>
 
 </div>
 
-<div id="standardFields">
+
+<div id="standardFields" class="hidden">
 
 <div class="grid">
 
 <div>
 <label>Širina (cm)</label>
-<input type="number" id="width" min="0" placeholder="npr. 300">
+
+<input
+  type="number"
+  id="width"
+  min="0"
+  placeholder="npr. 300"
+>
 </div>
+
 
 <div>
 <label>Visina (cm)</label>
-<input type="number" id="height" min="0" placeholder="npr. 240">
+
+<input
+  type="number"
+  id="height"
+  min="0"
+  placeholder="npr. 240"
+>
 </div>
 
 </div>
 
 </div>
+
 
 <label>Broj komada</label>
-<input type="number" id="quantity" value="1" min="1">
+
+<input
+  type="number"
+  id="quantity"
+  value="1"
+  min="1"
+>
+
 
 <label>Dodaci</label>
 
@@ -191,17 +218,22 @@ button:hover{
   <option value="500">Premium okovi +500 KM</option>
 </select>
 
-<button onclick="calculate()">IZRAČUNAJ CIJENU</button>
+
+<button onclick="calculate()">
+IZRAČUNAJ CIJENU
+</button>
 
 </div>
+
 
 <div class="card">
 
 <h3>⚙️ Cjenovnik</h3>
 
 <div class="small">
-Možeš promijeniti cijene po želji.
+Cijene možeš promijeniti po želji.
 </div>
+
 
 <div class="grid">
 
@@ -210,15 +242,18 @@ Možeš promijeniti cijene po želji.
 <input type="number" id="priceIveral" value="650">
 </div>
 
+
 <div>
 <label>MDF visoki sjaj / m</label>
 <input type="number" id="priceSjaj" value="850">
 </div>
 
+
 <div>
 <label>Lakirani MDF / m</label>
 <input type="number" id="priceLak" value="1100">
 </div>
+
 
 <div>
 <label>MDF akril / m</label>
@@ -229,156 +264,212 @@ Možeš promijeniti cijene po želji.
 
 </div>
 
+
 <div id="result" class="result hidden">
 
-<div>Procijenjena cijena</div>
+<div>PROCJENJENA CIJENA</div>
 
-<div class="price" id="total">0 KM</div>
+<div class="price" id="total">
+0 KM
+</div>
 
 <div class="details" id="details"></div>
 
 </div>
 
+
 </div>
+
 
 <script>
 
 function changeType(){
 
-  const type=document.getElementById("type").value;
+  const type =
+    document.getElementById("type").value;
 
-  const kitchen=document.getElementById("kitchenFields");
-  const standard=document.getElementById("standardFields");
+  const kitchen =
+    document.getElementById("kitchenFields");
 
-  if(type==="kuhinja"){
+  const standard =
+    document.getElementById("standardFields");
+
+
+  if(type === "kuhinja"){
+
     kitchen.classList.remove("hidden");
-    standard.classList.add("
-      color: white;
-      margin-top: 20px;
-    }
 
-    .result {
-      display: none;
-      text-align: center;
-    }
+    standard.classList.add("hidden");
 
-    .price {
-      font-size: 32px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+  }else{
 
-    .details {
-      color: #6b7280;
-      margin-top: 8px;
-    }
-  </style>
-</head>
+    kitchen.classList.add("hidden");
 
-<body>
+    standard.classList.remove("hidden");
 
-<div class="app">
+  }
 
-  <h1>🪑 Kalkulator namještaja</h1>
-  <div class="subtitle">Brzi izračun cijene kuhinje</div>
+}
 
-  <div class="card">
 
-    <label>Dužina kuhinje (metara)</label>
-    <input id="meters" type="number" min="0.1" step="0.1" placeholder="Npr. 6">
+function getMaterialPrice(){
 
-    <label>Materijal</label>
-    <select id="material">
-      <option value="650">Iveral — 650 KM/m</option>
-      <option value="850">MDF visoki sjaj — 850 KM/m</option>
-      <option value="1100">Lakirani MDF — 1100 KM/m</option>
-    </select>
+  const material =
+    document.getElementById("material").value;
 
-    <label>Radna ploča</label>
-    <select id="worktop">
-      <option value="0">Bez radne ploče</option>
-      <option value="150">Standardna — +150 KM/m</option>
-      <option value="250">Premium — +250 KM/m</option>
-    </select>
 
-    <label>Montaža</label>
-    <select id="assembly">
-      <option value="0">Bez montaže</option>
-      <option value="80">Montaža — +80 KM/m</option>
-    </select>
+  if(material === "iveral"){
 
-    <button class="calculate" onclick="calculate()">
-      🧮 IZRAČUNAJ CIJENU
-    </button>
-
-  </div>
-
-  <div class="card result" id="result">
-
-    <div>Procijenjena cijena:</div>
-
-    <div class="price" id="price">
-      0 KM
-    </div>
-
-    <div class="details" id="details"></div>
-
-  </div>
-
-</div>
-
-<script>
-
-  function calculate() {
-
-    const meters = parseFloat(
-      document.getElementById("meters").value
+    return Number(
+      document.getElementById("priceIveral").value
     );
 
-    const material = parseFloat(
-      document.getElementById("material").value
+  }
+
+
+  if(material === "mdf_sjaj"){
+
+    return Number(
+      document.getElementById("priceSjaj").value
     );
 
-    const worktop = parseFloat(
-      document.getElementById("worktop").value
+  }
+
+
+  if(material === "mdf_lak"){
+
+    return Number(
+      document.getElementById("priceLak").value
     );
 
-    const assembly = parseFloat(
-      document.getElementById("assembly").value
+  }
+
+
+  if(material === "mdf_akril"){
+
+    return Number(
+      document.getElementById("priceAkril").value
     );
 
-    if (!meters || meters <= 0) {
+  }
+
+
+  return 0;
+
+}
+
+
+function calculate(){
+
+  const type =
+    document.getElementById("type").value;
+
+
+  const materialPrice =
+    getMaterialPrice();
+
+
+  const quantity =
+    Number(
+      document.getElementById("quantity").value
+    ) || 1;
+
+
+  const extras =
+    Number(
+      document.getElementById("extras").value
+    ) || 0;
+
+
+  let total = 0;
+
+  let details = "";
+
+
+  if(type === "kuhinja"){
+
+    const length =
+      Number(
+        document.getElementById("length").value
+      );
+
+
+    if(!length || length <= 0){
+
       alert("Unesi dužinu kuhinje.");
+
       return;
+
     }
 
-    const totalPerMeter =
-      material + worktop + assembly;
 
-    const total = meters * totalPerMeter;
+    total =
+      (length * materialPrice) +
+      extras;
 
-    document.getElementById("price").innerText =
-      total.toLocaleString("bs-BA") + " KM";
 
-    document.getElementById("details").innerText =
-      meters + " m × " +
-      totalPerMeter.toLocaleString("bs-BA") +
+    details =
+      "Kuhinja: " +
+      length +
+      " m × " +
+      materialPrice.toLocaleString("bs-BA") +
       " KM/m";
 
-    document.getElementById("result").style.display =
-      "block";
 
-    if (window.Telegram && Telegram.WebApp) {
-      Telegram.WebApp.HapticFeedback.impactOccurred("light");
+  }else{
+
+    const width =
+      Number(
+        document.getElementById("width").value
+      );
+
+
+    const height =
+      Number(
+        document.getElementById("height").value
+      );
+
+
+    if(!width || width <= 0){
+
+      alert("Unesi širinu.");
+
+      return;
+
     }
+
+
+    if(!height || height <= 0){
+
+      alert("Unesi visinu.");
+
+      return;
+
+    }
+
+
+    const meters =
+      width / 100;
+
+
+    total =
+      (meters * materialPrice * quantity) +
+      extras;
+
+
+    details =
+      "Širina: " +
+      width +
+      " cm | " +
+      "Visina: " +
+      height +
+      " cm | " +
+      "Komada: " +
+      quantity;
+
   }
 
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-  }
 
-</script>
-
-</body>
-</html>
+  document.getElementById("total").innerText =
+    total.toLocaleString("bs-BA") +
+    "
